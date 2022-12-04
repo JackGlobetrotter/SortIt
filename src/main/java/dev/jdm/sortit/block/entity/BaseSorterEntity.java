@@ -1,6 +1,5 @@
 package dev.jdm.sortit.block.entity;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.IntStream;
@@ -8,13 +7,8 @@ import java.util.stream.IntStream;
 import dev.jdm.sortit.block.BaseSorterBlock;
 import dev.jdm.sortit.block.SorterTypes;
 import dev.jdm.sortit.screen.SorterScreenHandler;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.*;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
@@ -22,7 +16,6 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -30,7 +23,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -41,11 +33,11 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
 
     private int inverted;
 
-    private Inventory filterInventory;
+    private final Inventory filterInventory;
 
-    private boolean singleOutput = true;
+    private final boolean singleOutput;
 
-    private SorterTypes sorterType;
+    private final SorterTypes sorterType;
 
     private int transferCooldown = -1;
     private long lastTickTime;
@@ -55,22 +47,12 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
         public int get(int index) {
-            switch (index) {
-                case 0:
-                default:
-                    return inverted;
-            }
-
+            return inverted;
         }
 
         @Override
         public void set(int index, int value) {
-            switch (index) {
-                case 0:
-                default:
-                    inverted = value;
-            }
-
+            inverted = value;
         }
 
         @Override
@@ -99,6 +81,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
     public boolean canExtract(int var1, ItemStack var2, Direction var3) {
         return true;
     }
+
     @Override
     public List<ItemStack> getFilter() {
         DefaultedList<ItemStack> result = DefaultedList.ofSize(sorterType.size);
@@ -119,7 +102,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
         return this.inverted == 1;
     }
 
-    public boolean getSingleOutput(){
+    public boolean getSingleOutput() {
         return this.singleOutput;
     }
 
@@ -150,7 +133,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
     public void readNbt(NbtCompound tag) {
         super.readNbt(tag);
         NbtCompound filter = tag.getCompound("filter");
-        for (int i = 0; i<this.filterInventory.size(); i++){
+        for (int i = 0; i < this.filterInventory.size(); i++) {
             this.filterInventory.setStack(i, ItemStack.fromNbt(filter.getCompound(Integer.toString(i))));
         }
         this.inverted = tag.getInt("inverted");
@@ -160,7 +143,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
     public void writeNbt(NbtCompound tag) { // store level here?
 
         NbtCompound filter = new NbtCompound();
-        for (int i = 0; i < this.filterInventory.size(); i ++){
+        for (int i = 0; i < this.filterInventory.size(); i++) {
             filter.put(String.format("%s", i), this.filterInventory.getStack(i).writeNbt(new NbtCompound()));
         }
         tag.put("filter", filter); // MISSING DATA
@@ -197,7 +180,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
         if (world.isClient) {
             return false;
         }
-        if (!blockEntity.needsCooldown() && state.get(BaseSorterBlock.ENABLED).booleanValue()) {
+        if (!blockEntity.needsCooldown() && state.get(BaseSorterBlock.ENABLED)) {
             boolean bl = false;
             if (!blockEntity.isEmpty()) {
                 bl = BaseSorterEntity.insert(world, pos, state, blockEntity);
@@ -239,7 +222,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
             return false;
         }
 //TODO: check for item overflow if hopper/chest beneath is full or block is not a inventory
-        Inventory outputInventory = null;
+        Inventory outputInventory;
 
         Direction filtered_direction = state.get(BaseSorterBlock.FACING).getOpposite();
         Direction default_direction = Direction.UP;
@@ -252,7 +235,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
 
             boolean isFilteredItem = ((BaseSorterEntity) inventory).isAcceptedByFilter(itemStack);
 
-            if (filteredOutputInventory == null && defaultOutputInventory != null) {
+            if (filteredOutputInventory == null) {
                 if (BaseSorterEntity.isInventoryFull(defaultOutputInventory, default_direction))
                     return false;
                 else {
@@ -262,12 +245,9 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
 
             } else {
                 if (isFilteredItem) {
-                    if (filteredOutputInventory == null)
-                        continue;
-                    else if(BaseSorterEntity.isInventoryFull(filteredOutputInventory, filtered_direction) && defaultOutputInventory != null){
+                    if (BaseSorterEntity.isInventoryFull(filteredOutputInventory, filtered_direction) && defaultOutputInventory != null) {
                         outputInventory = defaultOutputInventory; //Overflow protection!!!
-                    }
-                    else {
+                    } else {
                         outputInventory = filteredOutputInventory;
                     }
                 } else {
