@@ -238,7 +238,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
         if (filteredOutputInventory == null && defaultOutputInventory == null) {
             return false;
         }
-
+//TODO: check for item overflow if hopper/chest beneath is full or block is not a inventory
         Inventory outputInventory = null;
 
         Direction filtered_direction = state.get(BaseSorterBlock.FACING).getOpposite();
@@ -256,15 +256,17 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
                 if (BaseSorterEntity.isInventoryFull(defaultOutputInventory, default_direction))
                     return false;
                 else {
-                    outputInventory = defaultOutputInventory; // empty eveything if no secondary output, because
-                    // filtering sould have been done beforehand, TBD !!!!
+                    outputInventory = defaultOutputInventory; // empty everything if no secondary output, because
+                    // filtering should have been done beforehand, TBD !!!!
                 }
 
             } else {
                 if (isFilteredItem) {
-                    if (filteredOutputInventory == null
-                            || BaseSorterEntity.isInventoryFull(filteredOutputInventory, filtered_direction))
+                    if (filteredOutputInventory == null)
                         continue;
+                    else if(BaseSorterEntity.isInventoryFull(filteredOutputInventory, filtered_direction) && defaultOutputInventory != null){
+                        outputInventory = defaultOutputInventory; //Overflow protection!!!
+                    }
                     else {
                         outputInventory = filteredOutputInventory;
                     }

@@ -27,26 +27,5 @@ public class ModBlocks {
         Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);
         Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "emerald_sorter"), EMERALD_SORTER);
         Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "diamond_sorter"), DIAMOND_SORTER);
-
-        registerColorProviders();
     }
-
-    public static void registerColorProviders() {
-        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-            return MapColor.ORANGE.color;
-        }, COPPER_SORTER);
-        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-            return MapColor.IRON_GRAY.color;
-        }, IRON_SORTER);
-        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-            return MapColor.GOLD.color;
-        }, GOLD_SORTER);
-        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-            return MapColor.EMERALD_GREEN.color;
-        }, EMERALD_SORTER);
-        ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> {
-            return MapColor.DIAMOND_BLUE.color;
-        }, DIAMOND_SORTER);
-    }
-
 }

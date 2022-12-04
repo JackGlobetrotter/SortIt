@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "SortIt! - A Fabric Items Sorting Mod",
-  "description": "TO DO!",
+  "description": "A mod providing vanilla-like item sorting in a somewhat more compact and less resource-heavy manner",
   "authors": [
     "Jakob Dickert"
   ],
@@ -14,7 +14,7 @@
     "homepage": "https://github.com/JackGlobetrotter/sortit#readme"
   },
 
-  "license": "CC0-1.0",
+  "license": "GPL-3.0",
   "icon": "assets/sortit/icon.png",
 
   "environment": "*",

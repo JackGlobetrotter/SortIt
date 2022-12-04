@@ -3,6 +3,7 @@ package dev.jdm.sortit.registry;
 import dev.jdm.sortit.SortIt;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.MapColor;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -31,11 +32,9 @@ public class ModItems {
         Registry.register(Registry.ITEM, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);
         Registry.register(Registry.ITEM, new Identifier(SortIt.MOD_ID, "emerald_sorter"), EMERALD_SORTER);
         Registry.register(Registry.ITEM, new Identifier(SortIt.MOD_ID, "diamond_sorter"), DIAMOND_SORTER);
-
-        registerColorProviders();
     }
 
-    public static void registerColorProviders() {
+    public static void registerItemColorProviders() {
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
             return MapColor.ORANGE.color;
