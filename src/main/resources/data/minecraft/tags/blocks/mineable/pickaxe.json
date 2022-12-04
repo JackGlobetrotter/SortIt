@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "sortit:copper_sorter",
+    "sortit:iron_sorter",
+    "sortit:gold_sorter",
+    "sortit:emerald_sorter",
+    "sortit:diamond_sorter"
+  ]
+}

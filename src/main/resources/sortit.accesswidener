@@ -1,0 +1,3 @@
+accessWidener v1 named
+extendable method net/minecraft/block/entity/HopperBlockEntity canInsert (Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Z
+accessible method net/minecraft/item/ItemUsageContext getHitResult ()Lnet/minecraft/util/hit/BlockHitResult;

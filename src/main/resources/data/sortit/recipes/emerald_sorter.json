@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PCH",
+    "PRT",
+    "SSS"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:redstone"
+    },
+    "S":{
+      "item": "minecraft:emerald"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "H": {
+      "item": "sortit:gold_sorter"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
+    }
+  },
+  "result": {
+    "item": "sortit:emerald_sorter",
+    "count": 1
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "sortit",
+  "version": "${version}",
+
+  "name": "SortIt! - A Fabric Items Sorting Mod",
+  "description": "TO DO!",
+  "authors": [
+    "Jakob Dickert"
+  ],
+  "contact": {
+    "sources": "https://github.com/JackGlobetrotter/sortit",
+    "issues": "https://github.com/JackGlobetrotter/sortit/issues",
+    "homepage": "https://github.com/JackGlobetrotter/sortit#readme"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/sortit/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.jdm.sortit.SortIt"
+    ], 
+    "client":[
+      "dev.jdm.sortit.SortItClient"
+    ]
+  },
+  "mixins": [
+    "sortit.mixin.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "accessWidener" : "sortit.accesswidener"
+}

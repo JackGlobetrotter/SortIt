@@ -1,0 +1,13 @@
+{
+    "block.sortit.copper_sorter": "Copper Sorter",
+    "block.sortit.iron_sorter": "Iron Sorter",
+    "block.sortit.gold_sorter": "Gold Sorter",
+    "block.sortit.emerald_sorter": "Emerald Sorter",
+    "block.sortit.diamond_sorter": "Diamond Sorter",
+    "block.sortit.sorter": "Sorter",
+    "container.copper_sorter": "Copper Sorter",
+    "container.iron_sorter": "Iron Sorter",
+    "container.gold_sorter": "Gold Sorter",
+    "container.emerald_sorter": "Emerald Sorter",
+    "container.diamond_sorter": "Diamond Sorter"
+}
