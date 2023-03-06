@@ -1,7 +1,7 @@
 package dev.jdm.sortit.block;
 
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
+import dev.jdm.sortit.block.entity.Sorter;
+import net.minecraft.block.entity.*;
 import org.jetbrains.annotations.Nullable;
 
 import dev.jdm.sortit.block.entity.BaseSorterEntity;
@@ -9,8 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.Hopper;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -137,11 +135,17 @@ public class BaseSorterBlock extends HopperBlock {
 		builder.add(FACING, ENABLED);
 	}
 
-	@Override
+	/*@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
 																  BlockEntityType<T> type) {
 		return world.isClient() ? null
 				: checkType(type, this.type.getBlockEntityType(),
 				BaseSorterEntity::serverTick);
+	}*/
+
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
+		return world.isClient() ? null : checkType(type,this.type.getBlockEntityType() , HopperBlockEntity::serverTick);
 	}
 }

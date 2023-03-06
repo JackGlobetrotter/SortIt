@@ -1,11 +1,14 @@
 package dev.jdm.sortit.mixin;
 
 import dev.jdm.sortit.block.BaseSorterBlock;
+import dev.jdm.sortit.block.entity.BaseSorterEntity;
 import dev.jdm.sortit.item.ItemSorterItem;
+import net.minecraft.client.gui.screen.TitleScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import dev.jdm.sortit.block.entity.Sorter;
@@ -26,9 +29,9 @@ public class HopperBlockEntityMixin {
         if (stack.isEmpty()) return true;
         if ((Object) inventory instanceof Sorter) {
             Sorter itemSorter = (Sorter) (Object) inventory;
+            System.out.println("insert 1");
             if (!itemSorter.isAcceptedByFilter(stack)) return true;
         }
-
         return false;
     }
 
@@ -38,6 +41,7 @@ public class HopperBlockEntityMixin {
 
             Sorter itemSorter = (Sorter) hopper;
 
+            System.out.println("Extract 1");
             if (itemSorter.getSingleOutput() && !itemSorter.isAcceptedByFilter(inventory.getStack(slot))) {
                 ci.setReturnValue(false);
             }
@@ -47,10 +51,19 @@ public class HopperBlockEntityMixin {
     @Inject(method = "extract(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/entity/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
     private static void filterItemEntityInput(Inventory inventory, ItemEntity itemEntity, CallbackInfoReturnable<Boolean> ci) {
         if (inventory instanceof Sorter) {
+            System.out.println("Extract 2");
             Sorter itemSorter = (Sorter) inventory;
             if (!itemSorter.isAcceptedByFilter(itemEntity.getStack())) {
                 ci.setReturnValue(false);
             }
         }
     }
+    @Inject(method = "insert(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/inventory/Inventory;)Z", at = @At("HEAD"), cancellable = true)
+    private static void filterInput(World world, BlockPos pos, BlockState state, Inventory inventory, CallbackInfoReturnable<Boolean> ci) {
+        if (inventory instanceof Sorter) {
+            BaseSorterEntity.insert(world, pos, state, inventory);
+        }
+        ci.setReturnValue(false);
+    }
+
 }

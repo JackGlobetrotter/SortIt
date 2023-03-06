@@ -39,9 +39,6 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
 
     private final SorterTypes sorterType;
 
-    private int transferCooldown = -1;
-    private long lastTickTime;
-
     private DefaultedList<ItemStack> inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
 
     private final PropertyDelegate propertyDelegate = new PropertyDelegate() {
@@ -163,48 +160,6 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
             return null;
         return BaseSorterEntity.getInventoryAt(world, pos.offset(defaultOutput ? Direction.DOWN : direction));
     }
-
-    public static void serverTick(World world, BlockPos pos, BlockState state, BaseSorterEntity blockEntity) {
-        --blockEntity.transferCooldown;
-        blockEntity.lastTickTime = world.getTime();
-        if (!blockEntity.needsCooldown()) {
-            blockEntity.setTransferCooldown(0);
-            BaseSorterEntity.insertAndExtract(world, pos, state, blockEntity,
-                    () -> BaseSorterEntity.extract(world, blockEntity));
-        }
-    }
-
-    private static boolean insertAndExtract(World world, BlockPos pos, BlockState state,
-                                            BaseSorterEntity blockEntity,
-                                            BooleanSupplier booleanSupplier) {
-        if (world.isClient) {
-            return false;
-        }
-        if (!blockEntity.needsCooldown() && state.get(BaseSorterBlock.ENABLED)) {
-            boolean bl = false;
-            if (!blockEntity.isEmpty()) {
-                bl = BaseSorterEntity.insert(world, pos, state, blockEntity);
-            }
-            if (!blockEntity.isFull()) {
-                bl |= booleanSupplier.getAsBoolean();
-            }
-            if (bl) {
-                blockEntity.setTransferCooldown(8);
-                BaseSorterEntity.markDirty(world, pos, state);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void setTransferCooldown(int transferCooldown) {
-        this.transferCooldown = transferCooldown;
-    }
-
-    private boolean needsCooldown() {
-        return this.transferCooldown > 0;
-    }
-
     private boolean isFull() {
         for (ItemStack itemStack : this.inventory) {
             if (!itemStack.isEmpty() && itemStack.getCount() == itemStack.getMaxCount())
@@ -215,13 +170,13 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
     }
 
 
-    private static boolean insert(World world, BlockPos pos, BlockState state, Inventory inventory) {
+    public static boolean insert(World world, BlockPos pos, BlockState state, Inventory inventory) {
         Inventory defaultOutputInventory = BaseSorterEntity.getOutputInventory(world, pos, state, false);
         Inventory filteredOutputInventory = BaseSorterEntity.getOutputInventory(world, pos, state, true);
         if (filteredOutputInventory == null && defaultOutputInventory == null) {
             return false;
         }
-//TODO: check for item overflow if hopper/chest beneath is full or block is not a inventory
+        //TODO: check for item overflow if hopper/chest beneath is full or block is not a inventory
         Inventory outputInventory;
 
         Direction filtered_direction = state.get(BaseSorterBlock.FACING).getOpposite();
@@ -236,7 +191,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
             boolean isFilteredItem = ((BaseSorterEntity) inventory).isAcceptedByFilter(itemStack);
 
             if (filteredOutputInventory == null) {
-                if (BaseSorterEntity.isInventoryFull(defaultOutputInventory, default_direction))
+                if (HopperBlockEntity.isInventoryFull(defaultOutputInventory, default_direction))
                     return false;
                 else {
                     outputInventory = defaultOutputInventory; // empty everything if no secondary output, because
@@ -245,14 +200,14 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
 
             } else {
                 if (isFilteredItem) {
-                    if (BaseSorterEntity.isInventoryFull(filteredOutputInventory, filtered_direction) && defaultOutputInventory != null) {
+                    if (HopperBlockEntity.isInventoryFull(filteredOutputInventory, filtered_direction) && defaultOutputInventory != null) {
                         outputInventory = defaultOutputInventory; //Overflow protection!!!
                     } else {
                         outputInventory = filteredOutputInventory;
                     }
                 } else {
                     if (defaultOutputInventory == null
-                            || BaseSorterEntity.isInventoryFull(defaultOutputInventory, default_direction))
+                            || HopperBlockEntity.isInventoryFull(defaultOutputInventory, default_direction))
                         continue;
                     else {
                         outputInventory = defaultOutputInventory;
@@ -260,7 +215,7 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
                 }
             }
 
-            ItemStack itemStack2 = BaseSorterEntity.transfer(inventory, outputInventory,
+            ItemStack itemStack2 = HopperBlockEntity.transfer(inventory, outputInventory,
                     inventory.removeStack(i, 1),
                     default_direction);
             if (itemStack2.isEmpty()) {
@@ -272,11 +227,5 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
         return false;
     }
 
-    private static boolean isInventoryFull(Inventory inventory, Direction direction) {
-        return BaseSorterEntity.getAvailableSlots(inventory, direction).allMatch(slot -> {
-            ItemStack itemStack = inventory.getStack(slot);
-            return itemStack.getCount() >= itemStack.getMaxCount();
-        });
-    }
 
 }

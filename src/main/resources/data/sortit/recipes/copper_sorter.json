@@ -10,7 +10,7 @@
         "item": "minecraft:redstone"
       },
       "S":{
-        "item": "minecraft:stone"
+        "item": "minecraft:copper_ingot"
       },
       "C": {
         "item": "minecraft:comparator"
