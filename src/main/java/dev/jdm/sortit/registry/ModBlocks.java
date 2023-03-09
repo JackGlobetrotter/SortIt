@@ -3,7 +3,6 @@ package dev.jdm.sortit.registry;
 import dev.jdm.sortit.SortIt;
 import dev.jdm.sortit.block.BaseSorterBlock;
 import dev.jdm.sortit.block.SorterTypes;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;

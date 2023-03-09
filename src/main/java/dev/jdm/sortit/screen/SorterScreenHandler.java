@@ -2,6 +2,7 @@ package dev.jdm.sortit.screen;
 
 import dev.jdm.sortit.block.SorterTypes;
 import dev.jdm.sortit.registry.ModScreenHandlerType;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;

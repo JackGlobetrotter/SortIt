@@ -3,7 +3,6 @@ package dev.jdm.sortit.registry;
 import dev.jdm.sortit.SortIt;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.MapColor;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -11,8 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ModItems {
-
-    // Chest Items
+    
     public static final BlockItem COPPER_SORTER = new BlockItem(ModBlocks.COPPER_SORTER,
             new Item.Settings().group(ItemGroup.REDSTONE));
     public static final BlockItem IRON_SORTER = new BlockItem(ModBlocks.IRON_SORTER,
@@ -25,8 +23,7 @@ public class ModItems {
             new Item.Settings().group(ItemGroup.REDSTONE));
 
     public static void registerItems() {
-
-        // Block Items
+        
         Registry.register(Registry.ITEM, new Identifier(SortIt.MOD_ID, "copper_sorter"), COPPER_SORTER);
         Registry.register(Registry.ITEM, new Identifier(SortIt.MOD_ID, "iron_sorter"), IRON_SORTER);
         Registry.register(Registry.ITEM, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);

@@ -1,6 +1,5 @@
 package dev.jdm.sortit.block;
 
-import dev.jdm.sortit.block.entity.Sorter;
 import net.minecraft.block.entity.*;
 import org.jetbrains.annotations.Nullable;
 

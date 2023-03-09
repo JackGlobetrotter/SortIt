@@ -10,8 +10,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-//https://discord.com/channels/507304429255393322/507982478276034570/1048619373843185664
-
 public class ModBlockEntityType {
     public static final BlockEntityType<BaseSorterEntity> COPPER_SORTER = FabricBlockEntityTypeBuilder
             .create((BlockPos pos, BlockState state) -> new BaseSorterEntity(SorterTypes.COPPER, pos, state),
@@ -35,7 +33,6 @@ public class ModBlockEntityType {
     .build(null);
 
     public static void registerBlockEntities() {
-        // Registering Sorter Block Entities
         Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "copper_sorter"), COPPER_SORTER);
         Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "iron_sorter"), IRON_SORTER);
         Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);

@@ -1,32 +1,32 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "PCH",
-      "PRT",
-      "SSS"
-    ],
-    "key": {
-      "P": {
-        "item": "minecraft:redstone"
-      },
-      "S":{
-        "item": "minecraft:iron_ingot"
-      },
-      "C": {
-        "item": "minecraft:comparator"
-      },
-      "R": {
-        "item": "minecraft:repeater"
-      },
-      "H": {
-        "item": "sortit:copper_sorter"
-      },
-      "T": {
-        "item": "minecraft:redstone_torch"
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PCH",
+    "PRT",
+    "SSS"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:redstone"
     },
-    "result": {
-      "item": "sortit:iron_sorter",
-      "count": 1
+    "S":{
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "H": {
+      "item": "sortit:copper_sorter"
+    },
+    "T": {
+      "item": "minecraft:redstone_torch"
     }
+  },
+  "result": {
+    "item": "sortit:iron_sorter",
+    "count": 1
   }
+}

@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -20,35 +20,9 @@ repositories {
 
 loom {
 	accessWidenerPath = file("src/main/resources/sortit.accesswidener")
-}
-/*
-
 	runtimeOnlyLog4j = true
-
-	runs {
-		datagen {
-			server()
-
-			name = "Data Generation"
-			runDir = "build/datagen"
-
-			vmArg("-Dfabric-api.datagen")
-			vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
-		}
-	}
 }
-assemble.dependsOn(runDatagen)
 
-sourceSets {
-	main {
-		resources {
-			srcDirs += [
-				"src/main/generated"
-			]
-		}
-	}
-}
-*/
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
