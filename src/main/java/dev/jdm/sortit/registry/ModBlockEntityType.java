@@ -6,9 +6,10 @@ import dev.jdm.sortit.block.entity.BaseSorterEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
 
 public class ModBlockEntityType {
     public static final BlockEntityType<BaseSorterEntity> COPPER_SORTER = FabricBlockEntityTypeBuilder
@@ -33,10 +34,10 @@ public class ModBlockEntityType {
     .build(null);
 
     public static void registerBlockEntities() {
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "copper_sorter"), COPPER_SORTER);
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "iron_sorter"), IRON_SORTER);
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "emerald_sorter"), EMERALD_SORTER);
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "diamond_sorter"), DIAMOND_SORTER);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "copper_sorter"), COPPER_SORTER);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "iron_sorter"), IRON_SORTER);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "emerald_sorter"), EMERALD_SORTER);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(SortIt.MOD_ID, "diamond_sorter"), DIAMOND_SORTER);
     }
 }

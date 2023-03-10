@@ -100,6 +100,7 @@ public class SorterScreenHandler extends ScreenHandler {
 		return this.inventory.canPlayerUse(player);
 	}
 
+	/*
 	@Override
 	public ItemStack transferSlot(PlayerEntity player, int index) {
 		Slot slot = this.slots.get(index);
@@ -125,6 +126,7 @@ public class SorterScreenHandler extends ScreenHandler {
 
 		return stack;
 	}
+ */
 
 	@Override
 	public void close(PlayerEntity player) {
@@ -132,5 +134,11 @@ public class SorterScreenHandler extends ScreenHandler {
 
 		this.inventory.onClose(player);
 		this.filterInventory.onClose(player);
+	}
+
+	@Override
+	public ItemStack quickMove(PlayerEntity player, int slot) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'quickMove'");
 	}
 }

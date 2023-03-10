@@ -7,8 +7,9 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class ModBlocks {
 
@@ -21,10 +22,10 @@ public class ModBlocks {
     public static final Block DIAMOND_SORTER = new BaseSorterBlock(settings.mapColor(MapColor.DIAMOND_BLUE), SorterTypes.DIAMOND);
 
     public static void registerBlocks() {
-        Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "copper_sorter"), COPPER_SORTER);
-        Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "iron_sorter"), IRON_SORTER);
-        Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);
-        Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "emerald_sorter"), EMERALD_SORTER);
-        Registry.register(Registry.BLOCK, new Identifier(SortIt.MOD_ID, "diamond_sorter"), DIAMOND_SORTER);
+        Registry.register(Registries.BLOCK, new Identifier(SortIt.MOD_ID, "copper_sorter"), COPPER_SORTER);
+        Registry.register(Registries.BLOCK, new Identifier(SortIt.MOD_ID, "iron_sorter"), IRON_SORTER);
+        Registry.register(Registries.BLOCK, new Identifier(SortIt.MOD_ID, "gold_sorter"), GOLD_SORTER);
+        Registry.register(Registries.BLOCK, new Identifier(SortIt.MOD_ID, "emerald_sorter"), EMERALD_SORTER);
+        Registry.register(Registries.BLOCK, new Identifier(SortIt.MOD_ID, "diamond_sorter"), DIAMOND_SORTER);
     }
 }

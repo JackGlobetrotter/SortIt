@@ -8,8 +8,9 @@ import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 
 public class ModScreenHandlerType {
         public static ScreenHandlerType<SorterScreenHandler> COPPER_SORTER;
@@ -58,15 +59,15 @@ public class ModScreenHandlerType {
                 });               
                 
                 
-                Registry.register(Registry.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "copper_sorter"),
+                Registry.register(Registries.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "copper_sorter"),
                                 COPPER_SORTER);
-                Registry.register(Registry.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "iron_sorter"),
+                Registry.register(Registries.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "iron_sorter"),
                                 IRON_SORTER);
-                Registry.register(Registry.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "gold_sorter"),
+                Registry.register(Registries.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "gold_sorter"),
                                 GOLD_SORTER);
-                Registry.register(Registry.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "emerald_sorter"),
+                Registry.register(Registries.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "emerald_sorter"),
                                 EMERALD_SORTER);
-                Registry.register(Registry.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "diamond_sorter"),
+                Registry.register(Registries.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "diamond_sorter"),
                                 DIAMOND_SORTER);
 
            

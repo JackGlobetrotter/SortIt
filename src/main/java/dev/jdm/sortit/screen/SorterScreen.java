@@ -51,7 +51,7 @@ public class SorterScreen extends HandledScreen<SorterScreenHandler> {
 	}
 
 	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShader(GameRenderer::getPositionColorTexProgram);
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.setShaderTexture(0, TEXTURE);
 		int x = (this.width - this.backgroundWidth) / 2;
@@ -94,7 +94,7 @@ public class SorterScreen extends HandledScreen<SorterScreenHandler> {
 
 		@Override
 		protected void renderExtra(MatrixStack matrices) {
-			this.drawTexture(matrices, this.x + 2, this.y + 2, this.u, this.v, 18, 18);
+			this.drawTexture(matrices, this.getX() + 2, this.getY() + 2, this.u, this.v, 18, 18);
 		}
 
 		@Override
@@ -104,6 +104,12 @@ public class SorterScreen extends HandledScreen<SorterScreenHandler> {
 			SorterScreen.this.client.getNetworkHandler()
 					.sendPacket(new CustomPayloadC2SPacket(SortIt.INVERT_SORT_PACKET_ID, buf));
 
+		}
+
+		@Override
+		protected void appendClickableNarrations(NarrationMessageBuilder builder) {
+			// TODO Auto-generated method stub
+			throw new UnsupportedOperationException("Unimplemented method 'appendClickableNarrations'");
 		}
 
 	}
@@ -124,7 +130,7 @@ public class SorterScreen extends HandledScreen<SorterScreenHandler> {
 
 		@Override
 		public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShader(GameRenderer::getPositionTexProgram);
 			RenderSystem.setShaderTexture(0, this.Texture);
 			RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 			int j = 0;
@@ -135,7 +141,7 @@ public class SorterScreen extends HandledScreen<SorterScreenHandler> {
 			} else if (this.isHovered()) {
 				j += this.width * 3;
 			}
-			this.drawTexture(matrices, this.x, this.y, j, 151, this.width, this.height);
+			this.drawTexture(matrices, this.getX(), this.getY(), j, 151, this.width, this.height);
 			this.renderExtra(matrices);
 		}
 
@@ -149,10 +155,6 @@ public class SorterScreen extends HandledScreen<SorterScreenHandler> {
 			this.disabled = disabled;
 		}
 
-		@Override
-		public void appendNarrations(NarrationMessageBuilder builder) {
-			this.appendDefaultNarrations(builder);
-		}
 	}
 
 }
