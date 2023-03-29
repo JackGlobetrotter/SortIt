@@ -134,15 +134,6 @@ public class BaseSorterBlock extends HopperBlock {
 		builder.add(FACING, ENABLED);
 	}
 
-	/*@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
-																  BlockEntityType<T> type) {
-		return world.isClient() ? null
-				: checkType(type, this.type.getBlockEntityType(),
-				BaseSorterEntity::serverTick);
-	}*/
-
-
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return world.isClient() ? null : checkType(type,this.type.getBlockEntityType() , HopperBlockEntity::serverTick);

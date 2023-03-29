@@ -30,6 +30,7 @@ public class HopperBlockEntityMixin {
         return false;
     }
 
+    //TODO: make changes so that filtered items are not extracted  ? or use canextract methodde in basesorter? 
     @Inject(method = "extract(Lnet/minecraft/block/entity/Hopper;Lnet/minecraft/inventory/Inventory;ILnet/minecraft/util/math/Direction;)Z", at = @At("HEAD"), cancellable = true)
     private static void filterInventoryInput(Hopper hopper, Inventory inventory, int slot, Direction side, CallbackInfoReturnable<Boolean> ci) {
         if (hopper instanceof Sorter) {
@@ -49,12 +50,14 @@ public class HopperBlockEntityMixin {
             }
         }
     }
+    // TODO: Bug in Hoppers
     @Inject(method = "insert(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/inventory/Inventory;)Z", at = @At("HEAD"), cancellable = true)
     private static void filterInput(World world, BlockPos pos, BlockState state, Inventory inventory, CallbackInfoReturnable<Boolean> ci) {
         if (inventory instanceof Sorter) {
-            BaseSorterEntity.insert(world, pos, state, inventory);
+            var res = BaseSorterEntity.insert(world, pos, state, inventory);
+            ci.setReturnValue(res);
         }
-        ci.setReturnValue(false);
+        //ci.setReturnValue(true);
     }
 
 }
