@@ -74,9 +74,14 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
 
     }
 
+    //TODO: can be done via mixin
     @Override
-    public boolean canExtract(int var1, ItemStack var2, Direction var3) {
-        return true;
+    public boolean canExtract(int slot, ItemStack stack, Direction direction) {
+        if (this.singleOutput)// single output
+            return true;
+        else
+            return this.isAcceptedByFilter(stack);
+
     }
 
     @Override
@@ -178,9 +183,10 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
         }
         //TODO: check for item overflow if hopper/chest beneath is full or block is not a inventory
         Inventory outputInventory;
+        Direction outputDirection;
 
-        Direction filtered_direction = state.get(BaseSorterBlock.FACING).getOpposite();
-        Direction default_direction = Direction.UP;
+        Direction filtered_direction = Direction.UP;//state.get(BaseSorterBlock.FACING).getOpposite();
+        Direction default_direction = state.get(BaseSorterBlock.FACING).getOpposite();//Direction.UP;
 
         for (int i = 0; i < inventory.size(); ++i) {
             if (inventory.getStack(i).isEmpty())
@@ -194,16 +200,19 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
                 if (HopperBlockEntity.isInventoryFull(defaultOutputInventory, default_direction))
                     return false;
                 else {
-                    outputInventory = defaultOutputInventory; // empty everything if no secondary output, because
+                    outputInventory = defaultOutputInventory;
+                    outputDirection = default_direction; // empty everything if no secondary output, because
                     // filtering should have been done beforehand, TBD !!!!
                 }
 
             } else {
                 if (isFilteredItem) {
                     if (HopperBlockEntity.isInventoryFull(filteredOutputInventory, filtered_direction) && defaultOutputInventory != null) {
-                        outputInventory = defaultOutputInventory; //Overflow protection!!!
+                        outputInventory = defaultOutputInventory; //Overflow protection!!!outputDirection
+                        outputDirection = default_direction;
                     } else {
                         outputInventory = filteredOutputInventory;
+                        outputDirection = filtered_direction;
                     }
                 } else {
                     if (defaultOutputInventory == null
@@ -211,13 +220,14 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
                         continue;
                     else {
                         outputInventory = defaultOutputInventory;
+                        outputDirection= default_direction;
                     }
                 }
             }
 
             ItemStack itemStack2 = HopperBlockEntity.transfer(inventory, outputInventory,
                     inventory.removeStack(i, 1),
-                    default_direction);
+                    outputDirection);
             if (itemStack2.isEmpty()) {
                 outputInventory.markDirty();
                 return true;
