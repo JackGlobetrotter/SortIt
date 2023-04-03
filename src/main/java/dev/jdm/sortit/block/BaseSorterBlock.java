@@ -1,6 +1,7 @@
 package dev.jdm.sortit.block;
 
 import net.minecraft.block.entity.*;
+import net.minecraft.state.property.IntProperty;
 import org.jetbrains.annotations.Nullable;
 
 import dev.jdm.sortit.block.entity.BaseSorterEntity;
@@ -25,6 +26,8 @@ public class BaseSorterBlock extends HopperBlock {
 	private final SorterTypes type;
 
 	public static final DirectionProperty FACING = Properties.HOPPER_FACING;
+
+	public static final IntProperty OVERFLOWTIMER = IntProperty.of("overflowtimer", 0 , 100);
 
 	private static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0.0, 10.0, 0.0, 16.0, 16.0, 16.0);
 	private static final VoxelShape MIDDLE_SHAPE = Block.createCuboidShape(4.0, 4.0, 4.0, 12.0, 10.0, 12.0);
@@ -55,7 +58,7 @@ public class BaseSorterBlock extends HopperBlock {
 		super(settings);
 		this.type = type;
 		this.setDefaultState((BlockState) ((BlockState) ((BlockState) this.stateManager.getDefaultState()).with(FACING,
-				Direction.DOWN)).with(ENABLED, true));
+				Direction.DOWN)).with(ENABLED, true).with(OVERFLOWTIMER, 0));
 	}
 
 	@Override
@@ -122,16 +125,16 @@ public class BaseSorterBlock extends HopperBlock {
 		if (direction == Direction.DOWN)
 			return (BlockState) ((BlockState) this.getDefaultState().with(FACING,
 					direction.getAxis() == Direction.Axis.Y ? Direction.DOWN : direction))
-					.with(ENABLED, true);
+					.with(ENABLED, true).with(OVERFLOWTIMER, 0);
 		else
 			return (BlockState) ((BlockState) this.getDefaultState().with(FACING,
 					direction.getAxis() == Direction.Axis.Y ? Direction.DOWN : direction))
-					.with(ENABLED, true);
+					.with(ENABLED, true).with(OVERFLOWTIMER, 0);
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, ENABLED);
+		builder.add(FACING, ENABLED, OVERFLOWTIMER);
 	}
 
 	@Override

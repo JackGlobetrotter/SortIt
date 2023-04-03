@@ -4,15 +4,18 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.IntStream;
 
+import dev.jdm.sortit.SortIt;
 import dev.jdm.sortit.block.BaseSorterBlock;
 import dev.jdm.sortit.block.SorterTypes;
 import dev.jdm.sortit.screen.SorterScreenHandler;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ComposterBlock;
 import net.minecraft.block.entity.*;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.inventory.SimpleInventory;
+import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -208,9 +211,36 @@ public class BaseSorterEntity extends HopperBlockEntity implements Sorter, Sided
             } else {
                 if (isFilteredItem) {
                     if (HopperBlockEntity.isInventoryFull(filteredOutputInventory, filtered_direction) && defaultOutputInventory != null) {
+                        if(filteredOutputInventory instanceof ComposterBlock.FullComposterInventory || filteredOutputInventory instanceof ComposterBlock.DummyInventory ){
+                            //TODO: Check if own inventory is full and set timer for overflowing when composter stays full
+                            if(!SortIt.COMPOSTER_OVERFLOW_EN ){
+                                continue;
+                            }
+                            else{
+                                if(SortIt.COMPOSTER_OVERFLOW_TIMER_EN ){
+                                    int OverflowTimer = state.get(BaseSorterBlock.OVERFLOWTIMER) + 1;
+                                    if (OverflowTimer > 15) {
+                                        world.setBlockState(pos, state.with(BaseSorterBlock.OVERFLOWTIMER, 0));
+                                    } else {
+                                        world.setBlockState(pos, state.with(BaseSorterBlock.OVERFLOWTIMER, OverflowTimer));
+                                        //System.out.println(OverflowTimer);
+                                        continue;
+                                    }
+                                }
+                            }
+                            //continue;
+                        }
+
+                        var f = HopperBlockEntity.isInventoryFull(filteredOutputInventory, filtered_direction);
+                        var t =  world.getBlockState(pos.offset(filtered_direction.getOpposite())).get(ComposterBlock.LEVEL);
+                        var z = filteredOutputInventory.getStack(0).getItem();
+
                         outputInventory = defaultOutputInventory; //Overflow protection!!!outputDirection
                         outputDirection = default_direction;
                     } else {
+                        if(state.get(BaseSorterBlock.OVERFLOWTIMER) > 0) {
+                            world.setBlockState(pos, state.with(BaseSorterBlock.OVERFLOWTIMER, 0));
+                        }
                         outputInventory = filteredOutputInventory;
                         outputDirection = filtered_direction;
                     }
