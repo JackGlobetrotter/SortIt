@@ -100,45 +100,27 @@ public class SorterScreenHandler extends ScreenHandler {
 		return this.inventory.canPlayerUse(player);
 	}
 
-	/*
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
-		Slot slot = this.slots.get(index);
-		if (slot == null || !slot.hasStack())
-			return ItemStack.EMPTY;
-
-		ItemStack slotStack = slot.getStack();
-		ItemStack stack = slotStack.copy();
-
-		if (index < this.inventory.size()) {
-			if (!this.insertItem(slotStack, this.inventory.size() + 1, this.slots.size(), true)) {
+	public ItemStack quickMove(PlayerEntity player, int invSlot) {
+		ItemStack newStack = ItemStack.EMPTY;
+		Slot slot = this.slots.get(invSlot);
+		if (slot.hasStack()) {
+			ItemStack originalStack = slot.getStack();
+			newStack = originalStack.copy();
+			if (invSlot < this.inventory.size()) {
+				if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
 				return ItemStack.EMPTY;
 			}
-		} else if (!this.insertItem(slotStack, 0, this.inventory.size(), false)) {
-			return ItemStack.EMPTY;
+
+			if (originalStack.isEmpty()) {
+				slot.setStackNoCallbacks(ItemStack.EMPTY);
+			} else {
+				slot.markDirty();
+			}
 		}
-
-		if (slotStack.isEmpty()) {
-			slot.setStack(ItemStack.EMPTY);
-		} else {
-			slot.markDirty();
-		}
-
-		return stack;
-	}
- */
-
-	@Override
-	public void close(PlayerEntity player) {
-		super.close(player);
-
-		this.inventory.onClose(player);
-		this.filterInventory.onClose(player);
-	}
-
-	@Override
-	public ItemStack quickMove(PlayerEntity player, int slot) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'quickMove'");
+		return newStack;
 	}
 }

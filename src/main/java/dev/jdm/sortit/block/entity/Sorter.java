@@ -29,23 +29,47 @@ public interface Sorter extends Hopper {
         if (filters.size() == 0)
             return true ^ inverted;
 
-        boolean isAccepted = filters.stream().anyMatch(filter -> {
+        boolean isAccepted = false;
 
-            if (filter == null || filter.isEmpty()) return false ^ inverted;
+        if(inverted){
+            isAccepted = filters.stream().allMatch(filter -> {
 
-            Item filterItem = filter.getItem();
-            Item item = stack.getItem();
+                if (filter == null || filter.isEmpty()) return true ;
 
-            if ((filterItem == item)) {
-                // Potions must match
-                if (filterItem instanceof PotionItem && item instanceof PotionItem) {
-                    return (PotionUtil.getPotion(filter) == PotionUtil.getPotion(stack)) ^ inverted;
+                Item filterItem_inv = filter.getItem();
+                Item item = stack.getItem();
+
+                if ((filterItem_inv == item)) {
+                    // Potions must match
+                    if (filterItem_inv instanceof PotionItem && item instanceof PotionItem) {
+                        return (PotionUtil.getPotion(filter) == PotionUtil.getPotion(stack)) ^ true ;
+                    }
+
+                    return false ;
                 }
+                return true ;
+            });
 
-                return true ^ inverted;
-            }
-            return false ^ inverted;
-        });
+        }
+        else{
+            isAccepted = filters.stream().anyMatch(filter -> {
+
+                if (filter == null || filter.isEmpty()) return false ;
+
+                Item filterItem = filter.getItem();
+                Item item = stack.getItem();
+
+                if ((filterItem == item)) {
+                    // Potions must match
+                    if (filterItem instanceof PotionItem && item instanceof PotionItem) {
+                        return (PotionUtil.getPotion(filter) == PotionUtil.getPotion(stack)) ;
+                    }
+
+                    return true ;
+                }
+                return false ;
+            });
+        }
 
         return isAccepted;
     }

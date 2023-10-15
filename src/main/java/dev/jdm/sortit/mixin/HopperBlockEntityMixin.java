@@ -24,19 +24,31 @@ public class HopperBlockEntityMixin {
     private static boolean filterOutput(ItemStack stack, World world, BlockPos pos, BlockState state, Inventory inventory) {
         if (stack.isEmpty()) return true;
         if ((Object) inventory instanceof Sorter) {
+            System.out.println("Inserting");
             Sorter itemSorter = (Sorter) (Object) inventory;
             if (!itemSorter.isAcceptedByFilter(stack)) return true;
         }
         return false;
     }
 
+    //TODO: make changes so that filtered items are not extracted  ? or use canextract methodde in basesorter? 
     @Inject(method = "extract(Lnet/minecraft/block/entity/Hopper;Lnet/minecraft/inventory/Inventory;ILnet/minecraft/util/math/Direction;)Z", at = @At("HEAD"), cancellable = true)
     private static void filterInventoryInput(Hopper hopper, Inventory inventory, int slot, Direction side, CallbackInfoReturnable<Boolean> ci) {
         if (hopper instanceof Sorter) {
             Sorter itemSorter = (Sorter) hopper;
-            if (itemSorter.getSingleOutput() && !itemSorter.isAcceptedByFilter(inventory.getStack(slot))) {
-                ci.setReturnValue(false);
+            if (itemSorter.getSingleOutput() ) {
+                if(!itemSorter.isAcceptedByFilter(inventory.getStack(slot))){
+                    System.out.println("Can't extract for single out");
+                    ci.setReturnValue(false);
+                }
+
+            }else{
+                if(!itemSorter.isAcceptedByFilter(inventory.getStack(slot))){
+                    System.out.println("Can't extract for multi output");
+                    ci.setReturnValue(false);
+                }
             }
+            System.out.println("Can extract");
         }
     }
 
@@ -49,12 +61,15 @@ public class HopperBlockEntityMixin {
             }
         }
     }
+    // TODO: Bug in Hoppers
     @Inject(method = "insert(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/inventory/Inventory;)Z", at = @At("HEAD"), cancellable = true)
     private static void filterInput(World world, BlockPos pos, BlockState state, Inventory inventory, CallbackInfoReturnable<Boolean> ci) {
         if (inventory instanceof Sorter) {
-            BaseSorterEntity.insert(world, pos, state, inventory);
+            System.out.println("Inserting");
+            var res = BaseSorterEntity.insert(world, pos, state, inventory);
+            ci.setReturnValue(res);
         }
-        ci.setReturnValue(false);
+        //ci.setReturnValue(true);
     }
 
 }

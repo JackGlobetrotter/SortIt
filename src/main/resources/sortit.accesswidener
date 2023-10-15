@@ -4,3 +4,6 @@ extendable method net/minecraft/block/entity/HopperBlockEntity canInsert (Lnet/m
 accessible method net/minecraft/block/entity/HopperBlockEntity isInventoryFull (Lnet/minecraft/inventory/Inventory;Lnet/minecraft/util/math/Direction;)Z
 
 accessible method net/minecraft/item/ItemUsageContext getHitResult ()Lnet/minecraft/util/hit/BlockHitResult;
+
+accessible class net/minecraft/block/ComposterBlock$FullComposterInventory
+accessible class net/minecraft/block/ComposterBlock$DummyInventory

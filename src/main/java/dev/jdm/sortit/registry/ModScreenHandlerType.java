@@ -4,6 +4,8 @@ import dev.jdm.sortit.SortIt;
 import dev.jdm.sortit.block.SorterTypes;
 import dev.jdm.sortit.screen.SorterScreenHandler;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
@@ -26,21 +28,21 @@ public class ModScreenHandlerType {
                                         new SimpleInventory(5), new SimpleInventory(1),
                                         new ArrayPropertyDelegate(1),
                                         ScreenHandlerContext.EMPTY);
-                });
+                }, FeatureSet.of(FeatureFlags.VANILLA));
                 
                 IRON_SORTER = new ScreenHandlerType<>((int syncId, PlayerInventory inventory) -> {
                         return new SorterScreenHandler(IRON_SORTER, SorterTypes.IRON, syncId, inventory,
                                         new SimpleInventory(5), new SimpleInventory(2),
                                         new ArrayPropertyDelegate(1),
                                         ScreenHandlerContext.EMPTY);
-                });
+                }, FeatureSet.of(FeatureFlags.VANILLA));
                 
                 GOLD_SORTER = new ScreenHandlerType<>((int syncId, PlayerInventory inventory) -> {
                         return new SorterScreenHandler(GOLD_SORTER, SorterTypes.GOLD, syncId, inventory,
                                         new SimpleInventory(5), new SimpleInventory(3),
                                         new ArrayPropertyDelegate(1),
                                         ScreenHandlerContext.EMPTY);
-                });
+                }, FeatureSet.of(FeatureFlags.VANILLA));
                 
                 
                 EMERALD_SORTER = new ScreenHandlerType<>((int syncId, PlayerInventory inventory) -> {
@@ -48,7 +50,7 @@ public class ModScreenHandlerType {
                                         new SimpleInventory(5), new SimpleInventory(4),
                                         new ArrayPropertyDelegate(1),
                                         ScreenHandlerContext.EMPTY);
-                });
+                }, FeatureSet.of(FeatureFlags.VANILLA));
                 
                 
                 DIAMOND_SORTER = new ScreenHandlerType<>((int syncId, PlayerInventory inventory) -> {
@@ -56,7 +58,7 @@ public class ModScreenHandlerType {
                                         new SimpleInventory(5), new SimpleInventory(5),
                                         new ArrayPropertyDelegate(1),
                                         ScreenHandlerContext.EMPTY);
-                });               
+                }, FeatureSet.of(FeatureFlags.VANILLA));
                 
                 
                 Registry.register(Registries.SCREEN_HANDLER, new Identifier(SortIt.MOD_ID, "copper_sorter"),

@@ -1,6 +1,7 @@
 package dev.jdm.sortit.block;
 
 import net.minecraft.block.entity.*;
+import net.minecraft.state.property.IntProperty;
 import org.jetbrains.annotations.Nullable;
 
 import dev.jdm.sortit.block.entity.BaseSorterEntity;
@@ -25,6 +26,8 @@ public class BaseSorterBlock extends HopperBlock {
 	private final SorterTypes type;
 
 	public static final DirectionProperty FACING = Properties.HOPPER_FACING;
+
+	public static final IntProperty OVERFLOWTIMER = IntProperty.of("overflowtimer", 0 , 100);
 
 	private static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0.0, 10.0, 0.0, 16.0, 16.0, 16.0);
 	private static final VoxelShape MIDDLE_SHAPE = Block.createCuboidShape(4.0, 4.0, 4.0, 12.0, 10.0, 12.0);
@@ -55,7 +58,7 @@ public class BaseSorterBlock extends HopperBlock {
 		super(settings);
 		this.type = type;
 		this.setDefaultState((BlockState) ((BlockState) ((BlockState) this.stateManager.getDefaultState()).with(FACING,
-				Direction.DOWN)).with(ENABLED, true));
+				Direction.DOWN)).with(ENABLED, true).with(OVERFLOWTIMER, 0));
 	}
 
 	@Override
@@ -122,26 +125,18 @@ public class BaseSorterBlock extends HopperBlock {
 		if (direction == Direction.DOWN)
 			return (BlockState) ((BlockState) this.getDefaultState().with(FACING,
 					direction.getAxis() == Direction.Axis.Y ? Direction.DOWN : direction))
-					.with(ENABLED, true);
-		else
+					.with(ENABLED, true).with(OVERFLOWTIMER, 0);
+		//make categorial sorting (dont include atriubutas as color etc
+		else // TODO: URGENT! create a button to set single or dual output, then place block simply facing its direction and use the facing value for extractta nd insert! Change the shape! Mannulay deterime which direction is the filtered one2
 			return (BlockState) ((BlockState) this.getDefaultState().with(FACING,
 					direction.getAxis() == Direction.Axis.Y ? Direction.DOWN : direction))
-					.with(ENABLED, true);
+					.with(ENABLED, true).with(OVERFLOWTIMER, 0);
 	}
 
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(FACING, ENABLED);
+		builder.add(FACING, ENABLED, OVERFLOWTIMER);
 	}
-
-	/*@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state,
-																  BlockEntityType<T> type) {
-		return world.isClient() ? null
-				: checkType(type, this.type.getBlockEntityType(),
-				BaseSorterEntity::serverTick);
-	}*/
-
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
